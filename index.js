@@ -85,6 +85,8 @@ var SimpleMailgunAdapter = mailgunOptions => {
                     });
                 });
             }
+        }else{
+            return new Promise.resolve();
         }
     };
 
