@@ -33,12 +33,16 @@ var SimpleMailgunAdapter = mailgunOptions => {
     }
 
     var sendVerificationEmail = options => {
-        var birthday = options.user.get("email");
+        var age = 0;
 
-        var ageDiff = Date.now() - birthday.getTime();
-        var ageDate = new Date(ageDiff);
+        if(options.user.get("birthDate") != undefined){
+            var birthday = options.user.get("birthDate");
 
-        var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+            var ageDiff = Date.now() - birthday.getTime();
+            var ageDate = new Date(ageDiff);
+
+            age = Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
 
         if (age < 13) {
             if (mailgunOptions.verificationBodyHTML) {
