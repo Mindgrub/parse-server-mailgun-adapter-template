@@ -1,6 +1,8 @@
 var Mailgun = require('mailgun-js');
 var mailcomposer = require('mailcomposer');
 
+const yearInMilliseconds = 1000 * 60 * 60 * 24 * 365.25;
+
 var SimpleMailgunAdapter = mailgunOptions => {
     if (!mailgunOptions || !mailgunOptions.apiKey || !mailgunOptions.domain || !mailgunOptions.fromAddress) {
         throw 'SimpleMailgunAdapter requires an API Key, domain, and fromAddress.';
@@ -35,13 +37,11 @@ var SimpleMailgunAdapter = mailgunOptions => {
     var sendVerificationEmail = options => {
         var age = 0;
 
-        if(options.user.get("birthDate") != undefined){
+        if (options.user.get("birthDate") != undefined) {
             var birthday = options.user.get("birthDate");
 
             var ageDiff = Date.now() - birthday.getTime();
-            var ageDate = new Date(ageDiff);
-
-            age = Math.abs(ageDate.getUTCFullYear() - 1970);
+            age = ageDiff / yearInMilliseconds;
         }
 
         if (age < 13) {
@@ -89,7 +89,7 @@ var SimpleMailgunAdapter = mailgunOptions => {
                     });
                 });
             }
-        }else{
+        } else {
             return new Promise.resolve();
         }
     };
